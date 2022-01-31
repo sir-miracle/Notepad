@@ -23,9 +23,7 @@
             android:id="@+id/action_addNoteFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
         <argument
-            app:argType="com.example.notepad.database.Note"
-            android:name="note"
-            android:defaultValue="@null"
-            app:nullable="true" />
+            android:name="currentNote"
+            app:argType="com.example.notepad.database.Note" />
     </fragment>
 </navigation>

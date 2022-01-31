@@ -1,12 +1,14 @@
 package com.example.notepad.database
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.versionedparcelable.ParcelField
+import kotlinx.android.parcel.Parcelize
 import java.io.Serializable
 
-
+@Parcelize
 @Entity
 data class Note(
     //the attributes are the columns of the table,
@@ -16,7 +18,7 @@ data class Note(
         // else the column names will be same as the variable names
         val title: String,
          val note: String
-):Serializable{
+):Parcelable{
 
     @PrimaryKey
         (autoGenerate = true)

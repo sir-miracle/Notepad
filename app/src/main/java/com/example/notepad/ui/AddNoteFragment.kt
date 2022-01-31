@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import com.example.notepad.R
 import com.example.notepad.database.Note
 import com.example.notepad.database.NoteDatabase
@@ -18,6 +19,7 @@ class AddNoteFragment : BaseFragment() {
     lateinit var btnSave: FloatingActionButton
     lateinit var edTitle: EditText
     lateinit var body: EditText
+    private val args by navArgs<AddNoteFragmentArgs>()
 
     private var note: Note? = null
 
@@ -40,38 +42,30 @@ class AddNoteFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.let {
+        edTitle = view.findViewById(R.id.title)
+        body = view.findViewById(R.id.notes)
 
-            note = AddNoteFragmentArgs.fromBundle(it).note
+        edTitle.setText(args.currentNote.title)
+        body.setText(args.currentNote.note)
 
-            edTitle = view.findViewById(R.id.title)
-            body = view.findViewById(R.id.notes)
-
-            edTitle.setText(note?.title)
-
-            body.setText(note?.note)
-
-
-
-        }
 
         btnSave = view.findViewById(R.id.fb_save)
-        btnSave.setOnClickListener {view2 ->
+        btnSave.setOnClickListener { view2 ->
 
-            edTitle = view.findViewById(R.id.title)
-            body = view.findViewById(R.id.notes)
+//            edTitle = view.findViewById(R.id.title)
+//            body = view.findViewById(R.id.notes)
 
             val notetitle = edTitle.text.toString().trim()
             val noteBody = body.text.toString().trim()
 
             //check that the title is not blank
-            if (notetitle.isBlank()){
+            if (notetitle.isBlank()) {
                 edTitle.error = "Title required"
                 edTitle.requestFocus()
                 return@setOnClickListener
             }
             // check that the note body is not blank so that you don't save empty text
-            if (noteBody.isBlank()){
+            if (noteBody.isBlank()) {
                 body.error = "Note body required"
                 body.requestFocus()
                 return@setOnClickListener
@@ -84,11 +78,11 @@ class AddNoteFragment : BaseFragment() {
                 context?.let {
                     val mNote = Note(notetitle, noteBody)
 
-                    if (note == null){
+                    if (note == null) {
 
                         NoteDatabase(it).getNoteDao().addNote(mNote)
                         it.toast("Note saved successfully")
-                    }else{
+                    } else {
 
                         mNote.id = note!!.id
 
@@ -113,12 +107,12 @@ class AddNoteFragment : BaseFragment() {
     }
 
 
-    private fun deleteNote(){
+    private fun deleteNote() {
         AlertDialog.Builder(requireContext()).apply {
 
             setTitle("Are you sure")
             setMessage("You cannot undo this delete operation")
-            setPositiveButton("yes"){_,_ ->
+            setPositiveButton("yes") { _, _ ->
 
                 launch { NoteDatabase(context).getNoteDao().deleteNote(note!!) }
 
@@ -126,8 +120,8 @@ class AddNoteFragment : BaseFragment() {
                 Navigation.findNavController(requireView()).navigate(action)
             }
 
-            setNegativeButton("No"){_,_ ->
-            //if the user clicks no, then nothing happens
+            setNegativeButton("No") { _, _ ->
+                //if the user clicks no, then nothing happens
             }
         }.create().show()
     }
@@ -135,13 +129,13 @@ class AddNoteFragment : BaseFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when(item.itemId){
+        when (item.itemId) {
 
             R.id.delete -> {
 
-                if (note != null){
+                if (note != null) {
                     deleteNote()
-                }else{
+                } else {
                     context?.toast("Cannot delete note")
                 }
 
@@ -153,28 +147,6 @@ class AddNoteFragment : BaseFragment() {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //saveNote(note)

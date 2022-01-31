@@ -39,10 +39,8 @@ class NotesRecyclerviewAdapter(private val notes: List<Note>): RecyclerView.Adap
         //make the recyclerview clickable
         holder.view.setOnClickListener {
 
-
-            val action = HomeFragmentDirections.actionHomeFragmentToAddNoteFragment()
-
-                // action.note = notes[position].note
+                val list = Note(notes[position].title, notes[position].note)
+            val action = HomeFragmentDirections.actionHomeFragmentToAddNoteFragment(list)
 
             Navigation.findNavController(it).navigate(action)
         }

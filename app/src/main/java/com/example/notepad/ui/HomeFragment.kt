@@ -55,9 +55,7 @@ class HomeFragment : BaseFragment() {
 
         fbAdd = view.findViewById(R.id.fb_add)
         fbAdd.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToAddNoteFragment()
-            Navigation.findNavController(it).navigate(action)
-
+            Navigation.findNavController(it).navigate(R.id.action_homeFragment_to_addNoteFragment)
         }
     }
 
